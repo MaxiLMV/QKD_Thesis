@@ -1,0 +1,57 @@
+import numpy as np
+from qiskit import QuantumCircuit, transpile
+from qiskit_aer import AerSimulator
+
+def generate_random_bases_e91(n):
+    return np.random.choice([0, 1, 2], size=n)
+
+def create_e91_circuit(alice_basis, bob_basis):
+    qc = QuantumCircuit(2, 2)
+    qc.h(0)
+    qc.cx(0, 1)
+
+    if alice_basis == 1:
+        qc.h(0)
+    elif alice_basis == 2:
+        qc.sdg(0)
+        qc.h(0)
+
+    if bob_basis == 1:
+        qc.h(1)
+    elif bob_basis == 2:
+        qc.sdg(1)
+        qc.h(1)
+
+    qc.measure([0, 1], [0, 1])
+    return qc
+
+def e91_simulation(n=10):
+    alice_bases = generate_random_bases_e91(n).tolist()
+    bob_bases = generate_random_bases_e91(n).tolist()
+
+    simulator = AerSimulator()
+    alice_results, bob_results, shared_key = [], [], []
+
+    for a_basis, b_basis in zip(alice_bases, bob_bases):
+        qc = create_e91_circuit(a_basis, b_basis)
+        compiled = transpile(qc, simulator)
+        result = simulator.run(compiled, shots=1).result().get_counts()
+        outcome = list(result.keys())[0]
+
+        a_bit = int(outcome[0])
+        b_bit = int(outcome[1])
+
+        alice_results.append(a_bit)
+        bob_results.append(b_bit)
+
+        if a_basis == b_basis:
+            shared_key.append(a_bit)
+
+    print("E91 Protocol Results:")
+    print(f"Alice's Bases:    {alice_bases}")
+    print(f"Bob's Bases:      {bob_bases}")
+    print(f"Alice's Results:  {alice_results}")
+    print(f"Bob's Results:    {bob_results}")
+    print(f"Shared Key:       {shared_key}")
+
+e91_simulation(10)
