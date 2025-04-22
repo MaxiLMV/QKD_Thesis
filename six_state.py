@@ -2,12 +2,15 @@ import numpy as np
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
 
+# Generate bits for Alice
 def generate_random_bits(n):
     return np.random.randint(2, size=n)
 
-def generate_random_bases_six_state(n):
+# Choose one of three numbers for bases
+def generate_random_bases(n):
     return np.random.choice([0, 1, 2], size=n)
 
+# Prepare the qubit
 def prepare_six_state_qubit(bit, basis):
     qc = QuantumCircuit(1, 1)
     if bit == 1:
@@ -19,6 +22,7 @@ def prepare_six_state_qubit(bit, basis):
         qc.s(0)
     return qc
 
+# Perform a measurement on Bob's side
 def measure_six_state_qubit(qc, basis):
     if basis == 1:
         qc.h(0)
@@ -30,8 +34,8 @@ def measure_six_state_qubit(qc, basis):
 
 def six_state_simulation(n=10):
     alice_bits = generate_random_bits(n).tolist()
-    alice_bases = generate_random_bases_six_state(n).tolist()
-    bob_bases = generate_random_bases_six_state(n).tolist()
+    alice_bases = generate_random_bases(n).tolist()
+    bob_bases = generate_random_bases(n).tolist()
 
     simulator = AerSimulator()
     bob_results, shared_key = [], []

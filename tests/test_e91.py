@@ -2,17 +2,20 @@ import pytest
 import numpy as np
 import e91
 
-def test_generate_random_bases_e91_range():
+# Test that each generated basis is within expected range {0, 1, 2}
+def test_generate_random_bases_range():
     n = 25
-    bases = e91.generate_random_bases_e91(n)
+    bases = e91.generate_random_bases(n)
     assert len(bases) == n
     assert all(b in [0, 1, 2] for b in bases)
 
+# Test if the Bell state circuit has the correct structure and 2 qubits
 def test_create_e91_circuit_structure():
     qc = e91.create_e91_circuit(2, 1)
     assert qc.num_qubits == 2
     assert qc.num_clbits == 2
 
+# Tets that a simulation with 0 qubits doesn't break anything
 def test_zero_qubits_simulation():
     n = 0
     alice_bases = []

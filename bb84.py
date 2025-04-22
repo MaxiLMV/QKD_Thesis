@@ -2,12 +2,15 @@ import numpy as np
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
 
+# Generate bits for Alice
 def generate_random_bits(n):
     return np.random.randint(2, size=n)
 
+# Generate bases for Alice and Bob
 def generate_random_bases(n):
     return np.random.randint(2, size=n)
 
+# Prepare qubits based on Alice's bits and bases
 def prepare_bb84_qubits(bits, bases):
     circuits = []
     for bit, basis in zip(bits, bases):
@@ -19,6 +22,7 @@ def prepare_bb84_qubits(bits, bases):
         circuits.append(qc)
     return circuits
 
+# Perform a measurement on Bob's side
 def measure_bb84_qubits(circuits, bases):
     simulator = AerSimulator()
     results = []
@@ -34,6 +38,7 @@ def measure_bb84_qubits(circuits, bases):
 
     return results
 
+# Extract bits where bases match
 def sift_key(alice_bases, bob_bases, alice_bits):
     return [alice_bits[i] for i in range(len(alice_bases)) if alice_bases[i] == bob_bases[i]]
 

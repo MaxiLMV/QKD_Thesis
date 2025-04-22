@@ -2,9 +2,11 @@ import numpy as np
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
 
+# Generate bases for Alice and Bob
 def generate_random_bases(n):
     return np.random.randint(2, size=n)
 
+# Create a Bell pair and measure according to Alice’s and Bob’s bases
 def create_bbm92_circuit(alice_basis, bob_basis):
     qc = QuantumCircuit(2, 2)
     qc.h(0)

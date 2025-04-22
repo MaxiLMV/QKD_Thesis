@@ -2,9 +2,11 @@ import numpy as np
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
 
-def generate_random_bases_e91(n):
+# Choose one of three numbers for bases
+def generate_random_bases(n):
     return np.random.choice([0, 1, 2], size=n)
 
+# Create a Bell pair and measure according to Alice’s and Bob’s bases
 def create_e91_circuit(alice_basis, bob_basis):
     qc = QuantumCircuit(2, 2)
     qc.h(0)
@@ -26,8 +28,8 @@ def create_e91_circuit(alice_basis, bob_basis):
     return qc
 
 def e91_simulation(n=10):
-    alice_bases = generate_random_bases_e91(n).tolist()
-    bob_bases = generate_random_bases_e91(n).tolist()
+    alice_bases = generate_random_bases(n).tolist()
+    bob_bases = generate_random_bases(n).tolist()
 
     simulator = AerSimulator()
     alice_results, bob_results, shared_key = [], [], []
