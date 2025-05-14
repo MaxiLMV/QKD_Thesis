@@ -1,5 +1,3 @@
-import pytest
-import numpy as np
 import six_state
 
 # Test if the number of generated bits matches the requested amount
@@ -45,3 +43,10 @@ def test_zero_qubits_simulation():
 
     assert bob_results == []
     assert shared_key == []
+
+# Test that QBER is within valid bounds
+def test_qber_bounds():
+    a = [0, 1, 1, 0, 1]
+    b = [1, 1, 0, 0, 1]
+    qber = six_state.calculate_qber(a, b)
+    assert 0.0 <= qber <= 1.0

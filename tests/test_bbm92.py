@@ -1,5 +1,3 @@
-import pytest
-import numpy as np
 import bbm92
 
 # Test that the number of generated bases matches the requested amount
@@ -38,3 +36,10 @@ def test_zero_qubits_simulation():
     assert alice_results == []
     assert bob_results == []
     assert shared_key == []
+
+# Test that QBER is within valid bounds
+def test_qber_bounds():
+    alice_bits = [0, 1, 1, 0, 1]
+    bob_bits = [1, 1, 0, 0, 1]
+    qber = bbm92.calculate_qber(alice_bits, bob_bits)
+    assert 0.0 <= qber <= 1.0
