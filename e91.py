@@ -1,3 +1,4 @@
+import time
 import numpy as np
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
@@ -27,12 +28,22 @@ def create_e91_circuit(alice_basis, bob_basis):
     qc.measure([0, 1], [0, 1])
     return qc
 
+# Calculate quantum bit error rate
+def calculate_qber(alice_bits, bob_bits):
+    if not alice_bits:
+        return 0.0
+    errors = sum(1 for a, b in zip(alice_bits, bob_bits) if a != b)
+    return errors / len(alice_bits)
+
 def e91_simulation(n=10):
+    start_time = time.time()
+
     alice_bases = generate_random_bases(n).tolist()
     bob_bases = generate_random_bases(n).tolist()
 
     simulator = AerSimulator()
-    alice_results, bob_results, shared_key = [], [], []
+    alice_results, bob_results = [], []
+    matching_alice_bits, matching_bob_bits = [], []
 
     for a_basis, b_basis in zip(alice_bases, bob_bases):
         qc = create_e91_circuit(a_basis, b_basis)
@@ -47,7 +58,14 @@ def e91_simulation(n=10):
         bob_results.append(b_bit)
 
         if a_basis == b_basis:
-            shared_key.append(a_bit)
+            matching_alice_bits.append(a_bit)
+            matching_bob_bits.append(b_bit)
+
+    shared_key = matching_alice_bits
+    qber = calculate_qber(matching_alice_bits, matching_bob_bits)
+
+    end_time = time.time()
+    runtime = end_time - start_time
 
     print("E91 Protocol Results:")
     print(f"Alice's Bases:    {alice_bases}")
@@ -55,5 +73,7 @@ def e91_simulation(n=10):
     print(f"Alice's Results:  {alice_results}")
     print(f"Bob's Results:    {bob_results}")
     print(f"Shared Key:       {shared_key}")
+    print(f"QBER:             {qber:.2f}")
+    print(f"Runtime:          {runtime:.4f} seconds")
 
 e91_simulation(10)
