@@ -76,4 +76,4 @@ def e91_simulation(n=10):
     print(f"QBER:             {qber:.2f}")
     print(f"Runtime:          {runtime:.4f} seconds")
 
-e91_simulation(10)
+e91_simulation()

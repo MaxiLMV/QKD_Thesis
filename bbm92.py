@@ -71,4 +71,4 @@ def bbm92_simulation(n=10):
     print(f"QBER:             {qber:.2f}")
     print(f"Runtime:          {runtime:.4f} seconds")
 
-bbm92_simulation(10)
+bbm92_simulation(25)

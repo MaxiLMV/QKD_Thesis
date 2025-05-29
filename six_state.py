@@ -83,4 +83,4 @@ def six_state_simulation(n=10):
     print(f"QBER:             {qber:.2f}")
     print(f"Runtime:          {runtime:.4f} seconds")
 
-six_state_simulation(10)
+six_state_simulation(25)

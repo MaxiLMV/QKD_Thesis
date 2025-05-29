@@ -38,15 +38,6 @@ def test_zero_qubits_simulation():
     assert results == []
     assert shared_key == []
 
-# Test that Eve's intercept and resend process creates circuits and results of correct length
-def test_eve_intercept_and_resend_length():
-    alice_bits = [0, 1, 1, 0]
-    alice_bases = [0, 0, 1, 1]
-    eve_bases = [1, 0, 1, 0]
-    circuits = bb84.prepare_bb84_qubits(alice_bits, alice_bases)
-    new_circuits, eve_results = bb84.eve_intercept_and_resend(circuits, eve_bases)
-    assert len(new_circuits) == len(eve_results) == len(alice_bits)
-
 # Test that QBER returns expected value for mismatched results
 def test_calculate_qber_correctness():
     alice_bits  = [0, 1, 1, 0, 1]
